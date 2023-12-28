@@ -3,6 +3,7 @@ import MoviCard from "../MoviCard/MoviCard";
 import Loader from "../Loader/Loader";
 import SearchPanel from "../SearchPanel/SearchPanel";
 import FilmNotFound from "../FilmNotFound/FilmNotFound";
+import MyPagination from "../MyPagination/MyPagination";
 import MoviesDBService from "../../services/moviesDB-service";
 
 import Error from "../Error/Error";
@@ -50,7 +51,8 @@ this.setState({loading: false,
     const spinner = loading ? <Loader /> : null;
     const errorIndicator = error ? <Error errorMessage={errorMessage}/> : null;
     const content = hasDate ? <MoviesItems moviesDate={moviesDate} /> : null;
-    const noFilm = !hasDate ? <FilmNotFound /> : null
+    const noFilm = !hasDate ? <FilmNotFound /> : null;
+    const mypagination = (moviesDate.length > 0) ? <MyPagination /> : null;
 
     return (
         <>
@@ -61,6 +63,7 @@ this.setState({loading: false,
         {content}
         {noFilm}
       </ul>
+      {mypagination}
         </>
         
     );

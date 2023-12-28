@@ -8,6 +8,7 @@ const FilmNotFound = () => {
       description='Please change the request and try again'
       type='info'
       className="alert-film-not-found"
+      showIcon
     />
     )
 }

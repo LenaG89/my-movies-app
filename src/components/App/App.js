@@ -19,30 +19,6 @@ export default class App extends Component {
           <Layout className="moviesapp">
             <HeaderMenu />
             <MoviesList />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                margin: "20px 0 0 0",
-              }}
-            >
-              <ConfigProvider
-                theme={{
-                  token: {
-                    colorPrimary: "#fff",
-                  },
-                  components: {
-                    Pagination: {
-                      itemActiveBg: "#1677ff",
-                      itemSize: 24,
-                    },
-                  },
-                }}
-              >
-                <Pagination defaultCurrent={1} total={50} />
-              </ConfigProvider>
-            </div>
           </Layout>
         </Online>
       </>

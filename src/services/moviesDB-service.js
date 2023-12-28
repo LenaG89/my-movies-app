@@ -16,6 +16,12 @@ export default class MoviesDBService {
     );
     return res.results.map(this._transformMovieCard);
   }
+  async getPageOfMovies(movieName, page) {
+    const res = await this.getResource(
+      `/search/movie?query=${movieName}&api_key=${this._apiKey}&page=${page}`
+    );
+    return res.results.map(this._transformMovieCard);
+  }
   _transformMovieCard = (movie) => {
     return {
       label: movie.title,
@@ -24,6 +30,7 @@ export default class MoviesDBService {
       rate: movie.vote_average,
       id: movie.id,
       poster: movie.poster_path,
+    
     };
   };
 }
