@@ -10,13 +10,13 @@ export default class MoviesDBService {
 
     return await res.json();
   }
-  async getAllMovies() {
+  async getAllMovies(movieName) {
     const res = await this.getResource(
-      `/search/movie?query=return&api_key=${this._apiKey}`
+      `/search/movie?query=${movieName}&api_key=${this._apiKey}`
     );
     return res.results.map(this._transformMovieCard);
   }
-  _transformMovieCard(movie) {
+  _transformMovieCard = (movie) => {
     return {
       label: movie.title,
       date: movie.release_date,
@@ -25,5 +25,5 @@ export default class MoviesDBService {
       id: movie.id,
       poster: movie.poster_path,
     };
-  }
+  };
 }

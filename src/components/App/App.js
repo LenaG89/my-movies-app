@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import HeaderMenu from "../Header/Header";
-import SearchPanel from "../SearchPanel/SearchPanel";
+
 import MoviesList from "../MoviesList/MoviesList";
 import OffLine from "../OffLine/OffLine";
 import { Offline, Online } from "react-detect-offline";
@@ -18,7 +18,6 @@ export default class App extends Component {
         <Online>
           <Layout className="moviesapp">
             <HeaderMenu />
-            <SearchPanel />
             <MoviesList />
             <div
               style={{

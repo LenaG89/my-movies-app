@@ -32,7 +32,7 @@ export default class MoviCard extends Component {
           <h3 className="cardTitle">{label}</h3>
           <div className="rating">{rate}</div>
           <div className="date">
-            {date ? format(parseISO(date), "MMMM d, yyyy") : "Неизвестно"}
+            {date ? format(parseISO(date), "MMMM d, yyyy") : "Not found"}
           </div>
           <div className="genres">
             <div className="genre">Action</div>

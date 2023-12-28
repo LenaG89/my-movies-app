@@ -1,31 +1,29 @@
-import React from 'react';
-import { AutoComplete } from 'antd';
-const options = [
-  {
-    value: 'Burns Bay Road',
-  },
-  {
-    value: 'Downing Street',
-  },
-  {
-    value: 'Wall Street',
-  },
-];
-const SearchPanel = () => (
-  <AutoComplete
-    style={{
-      width: '100%',
-      margin: '19px 0 36px 0',
-      boxSizing: 'border-box'
+import React, { Component } from 'react';
+import { Input } from 'antd';
+import { debounce } from 'lodash';
 
-    }}
-    options={options}
-    placeholder="Type to search..."
-    filterOption={(inputValue, option) =>
-      option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
-    }
-  />
-);
+import './SearchPanel.css'
+
+class SearchPanel extends Component  {
+  state={
+    label: '',
+  
+  }
+  componentDidUpdate(prevProps){
+if (this.props.value !== prevProps.value) {
+  this.props.value =''
+}
+  }
+  onLabelChange = debounce((e) => {
+    const searchKeyWords = e.target.value;
+    this.setState({label: searchKeyWords})
+    this.props.searchMovie(searchKeyWords)
+  }, 500)
+  render(){
+    return <Input className='search-panel' onChange= {this.onLabelChange} placeholder="Type to search..." value={this.state.value} />
+  }
+}
+  
 export default SearchPanel;
 
 
