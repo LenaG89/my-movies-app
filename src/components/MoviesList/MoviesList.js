@@ -14,58 +14,84 @@ export default class MoviesList extends Component {
   moviesService = new MoviesDBService();
 
   state = {
+    totalPage: null,
+    page: null,
+    queryMovie: null,
     moviesDate: [],
     filmNotFound: false,
     loading: false,
     error: false,
-    errorMessage: ''
+    errorMessage: "",
   };
 
   onError = (err) => {
-this.setState({loading: false,
-    error: true,
-    errorMessage: err.message,
-})
+    this.setState({ loading: false, error: true, errorMessage: err.message });
   };
-  searchMovie = (movieName) => {
-    this.setState({loading: true})
-    if (movieName.trim() !== ' '){
-        this.moviesService
-        .getAllMovies(movieName)
-        .then((movies) => {
-            if (movies.length !== 0){
-            this.setState({ moviesDate: movies, loading: false, filmNotFound: false })}
-        else {
+
+  searchMovie = (movieName, numPage) => {
+    this.setState({ loading: true });
+    if (movieName.trim() !== " ") {
+      this.moviesService
+        .getAllMovies(movieName, numPage)
+        .then((res) => {
+          if (res.results.length !== 0) {
             this.setState({
-                loading: false,
-                filmNotFound: true
-            })
-        }})
-        .catch( this.onError)
-    
-}}
-     
+              queryMovie: movieName,
+              moviesDate: res.results,
+              totalPage: res.total_pages,
+              page: res.page,
+              loading: false,
+              filmNotFound: false,
+            });
+          } else {
+            this.setState({
+              loading: false,
+              filmNotFound: true,
+            });
+          }
+        })
+        .catch(this.onError);
+    }
+  };
+
+  
   render() {
-    const { moviesDate, loading, error, errorMessage } = this.state;
-    const hasDate = !(loading || error)
+    const {
+      moviesDate,
+      loading,
+      error,
+      errorMessage,
+      page,
+      totalPage,
+      queryMovie,
+      filmNotFound,
+    } = this.state;
+    const hasDate = !(loading || error);
     const spinner = loading ? <Loader /> : null;
-    const errorIndicator = error ? <Error errorMessage={errorMessage}/> : null;
+    const errorIndicator = error ? <Error errorMessage={errorMessage} /> : null;
     const content = hasDate ? <MoviesItems moviesDate={moviesDate} /> : null;
-    const noFilm = !hasDate ? <FilmNotFound /> : null;
-    const mypagination = (moviesDate.length > 0) ? <MyPagination /> : null;
+    const noFilm = (moviesDate.length === 0 && filmNotFound )? <FilmNotFound /> : null;
+    const mypagination =
+      moviesDate.length > 0 ? (
+        <MyPagination
+          searchMovie={this.searchMovie}
+          page={page}
+          totalPage={totalPage}
+          queryMovie={queryMovie}
+        />
+      ) : null;
 
     return (
-        <>
-        <SearchPanel searchMovie={this.searchMovie}/>
-      <ul className="moviesList">
-        {errorIndicator}
-        {spinner}
-        {content}
-        {noFilm}
-      </ul>
-      {mypagination}
-        </>
-        
+      <>
+        <SearchPanel searchMovie={this.searchMovie} />
+        <ul className="moviesList">
+          {errorIndicator}
+          {spinner}
+          {content}
+          {noFilm}
+        </ul>
+        {mypagination}
+      </>
     );
   }
 }

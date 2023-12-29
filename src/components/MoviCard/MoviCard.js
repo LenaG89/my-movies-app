@@ -17,28 +17,29 @@ export default class MoviCard extends Component {
   }
 
   render() {
-    const { label, date, description, rate, poster } = this.props.movie;
+    const { title, release_date, overview, vote_average, poster_path } = this.props.movie;
+    
     return (
       <>
         <div className="img">
           <img
             src={
-              poster ? `https://image.tmdb.org/t/p/w500/${poster}` : no_image
+              poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : no_image
             }
             alt="poster"
           />
         </div>
         <div className="card">
-          <h3 className="cardTitle">{label}</h3>
-          <div className="rating">{rate}</div>
+          <h3 className="cardTitle">{title}</h3>
+          <div className="rating">{vote_average}</div>
           <div className="date">
-            {date ? format(parseISO(date), "MMMM d, yyyy") : "Not found"}
+            {release_date ? format(parseISO(release_date), "MMMM d, yyyy") : "Not found"}
           </div>
           <div className="genres">
             <div className="genre">Action</div>
             <div className="genre">Drame</div>
           </div>
-          <div className="description">{this.kitcut(description, 150)}</div>
+          <div className="description">{this.kitcut(overview, 150)}</div>
           <Rate
             style={{ fontSize: "14px", margin: "10px 0" }}
             value="null"

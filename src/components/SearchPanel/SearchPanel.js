@@ -20,7 +20,7 @@ if (this.props.value !== prevProps.value) {
     this.props.searchMovie(searchKeyWords)
   }, 500)
   render(){
-    return <Input className='search-panel' onChange= {this.onLabelChange} placeholder="Type to search..." value={this.state.value} />
+    return <Input className='search-panel' name='search' onChange= {this.onLabelChange} placeholder="Type to search..." value={this.state.value} />
   }
 }
   

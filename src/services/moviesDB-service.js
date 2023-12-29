@@ -10,27 +10,12 @@ export default class MoviesDBService {
 
     return await res.json();
   }
-  async getAllMovies(movieName) {
-    const res = await this.getResource(
-      `/search/movie?query=${movieName}&api_key=${this._apiKey}`
-    );
-    return res.results.map(this._transformMovieCard);
-  }
-  async getPageOfMovies(movieName, page) {
+  async getAllMovies(movieName, page=1) {
     const res = await this.getResource(
       `/search/movie?query=${movieName}&api_key=${this._apiKey}&page=${page}`
     );
-    return res.results.map(this._transformMovieCard);
+    return res;
   }
-  _transformMovieCard = (movie) => {
-    return {
-      label: movie.title,
-      date: movie.release_date,
-      description: movie.overview,
-      rate: movie.vote_average,
-      id: movie.id,
-      poster: movie.poster_path,
-    
-    };
-  };
+ 
+ 
 }
