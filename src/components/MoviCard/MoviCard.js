@@ -5,6 +5,7 @@ import { format, parseISO } from "date-fns";
 
 import "./MoviCard.css";
 
+
 export default class MoviCard extends Component {
   kitcut(text, limit = 150) {
     var description = text.trim();
@@ -15,11 +16,23 @@ export default class MoviCard extends Component {
     str = a.join(" ");
     return str + "...";
   }
+  const 
+  onRateChange = (countStars) => {
 
+
+  }
   render() {
     const { title, release_date, overview, vote_average, poster_path } = this.props.movie;
+
+      let classNames = 'rating ';
+      if (0 <= vote_average && vote_average  <= 3){classNames =  classNames + 'default'}
+      else if  (3 < vote_average && vote_average  < 5){ classNames = classNames + 'low'}
+      else if  (5 <= vote_average && vote_average  <= 7){ classNames = classNames +  'medium'}
+      else if (7 < vote_average && vote_average <= 10) { classNames = classNames + 'high'}
     
+   
     return (
+      
       <>
         <div className="img">
           <img
@@ -31,7 +44,7 @@ export default class MoviCard extends Component {
         </div>
         <div className="card">
           <h3 className="cardTitle">{title}</h3>
-          <div className="rating">{vote_average}</div>
+          <div className={classNames}>{Math.round(vote_average * 10) / 10}</div>
           <div className="date">
             {release_date ? format(parseISO(release_date), "MMMM d, yyyy") : "Not found"}
           </div>
@@ -48,6 +61,7 @@ export default class MoviCard extends Component {
             allowHalf
             allowClear={false}
             defaultValue={0}
+            onChange={this.onRateChange}
           />
         </div>
       </>

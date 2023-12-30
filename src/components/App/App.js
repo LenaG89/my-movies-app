@@ -4,11 +4,15 @@ import HeaderMenu from "../Header/Header";
 import MoviesList from "../MoviesList/MoviesList";
 import OffLine from "../OffLine/OffLine";
 import { Offline, Online } from "react-detect-offline";
-import { Pagination, Layout, ConfigProvider } from "antd";
+import { Layout } from "antd";
+import MoviesDBService from "../../services/moviesDB-service";
+import GuestSession from "../../services/guest-session";
 
 import "./App.css";
 
 export default class App extends Component {
+  moviesService = new MoviesDBService();
+  guest = new GuestSession();
   render() {
     return (
       <>
