@@ -8,9 +8,9 @@ import MoviesDBService from "../../services/moviesDB-service";
 
 import Error from "../Error/Error";
 
-import "./MoviesList.css";
+import "./SearchList.css";
 
-export default class MoviesList extends Component {
+export default class SearchList extends Component {
   moviesService = new MoviesDBService();
 
   state = {
@@ -69,7 +69,7 @@ export default class MoviesList extends Component {
     const hasDate = !(loading || error);
     const spinner = loading ? <Loader /> : null;
     const errorIndicator = error ? <Error errorMessage={errorMessage} /> : null;
-    const content = hasDate ? <MoviesItems moviesDate={moviesDate} /> : null;
+    const content = hasDate ? <MoviesItems moviesDate={moviesDate} onRateChange={this.props.onRateChange} /> : null;
     const noFilm = (moviesDate.length === 0 && filmNotFound )? <FilmNotFound /> : null;
     const mypagination =
       moviesDate.length > 0 ? (
@@ -95,12 +95,13 @@ export default class MoviesList extends Component {
     );
   }
 }
-const MoviesItems = ({ moviesDate }) => {
+const MoviesItems = ({ moviesDate, onRateChange }) => {
   const moviCads = moviesDate.map((movie) => {
-    const { id } = movie;
+    const { id, rating } = movie;
     return (
       <li className="cardItem" key={id}>
-        <MoviCard movie={movie} />
+        <MoviCard movie={movie} 
+        onRateChange={() => onRateChange(id, rating) }/>
       </li>
     );
   });

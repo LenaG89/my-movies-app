@@ -16,20 +16,17 @@ export default class MoviCard extends Component {
     str = a.join(" ");
     return str + "...";
   }
-  const 
-  onRateChange = (countStars) => {
-
-
-  }
+  
   render() {
-    const { title, release_date, overview, vote_average, poster_path } = this.props.movie;
+    const {onRateChange} = this.props;
+    const { id, title, release_date, overview, vote_average, poster_path, rating } = this.props.movie;
 
       let classNames = 'rating ';
       if (0 <= vote_average && vote_average  <= 3){classNames =  classNames + 'default'}
       else if  (3 < vote_average && vote_average  < 5){ classNames = classNames + 'low'}
       else if  (5 <= vote_average && vote_average  <= 7){ classNames = classNames +  'medium'}
       else if (7 < vote_average && vote_average <= 10) { classNames = classNames + 'high'}
-    
+      
    
     return (
       
@@ -55,13 +52,14 @@ export default class MoviCard extends Component {
           <div className="description">{this.kitcut(overview, 150)}</div>
           <Rate
             style={{ fontSize: "14px", margin: "10px 0" }}
-            value="null"
+            id={id}
+            value={rating}
             className="rate"
             count={10}
             allowHalf
             allowClear={false}
-            defaultValue={0}
-            onChange={this.onRateChange}
+            defaultValue={rating}
+            onChange={()=>onRateChange(rating)}
           />
         </div>
       </>
