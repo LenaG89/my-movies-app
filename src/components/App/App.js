@@ -11,6 +11,18 @@ import GuestSession from "../../services/guest-session";
 import "./App.css";
 
 export default class App extends Component {
+  state={
+    pageTab: 'search',
+      genres: [],
+      guestToken: '',
+      dataRated: {
+        moviesRated: [],
+        totalPage: 0,
+        page: 1,
+      },
+      error: false,
+      errorMessage: '',
+  }
   moviesService = new MoviesDBService();
   guest = new GuestSession();
   render() {
