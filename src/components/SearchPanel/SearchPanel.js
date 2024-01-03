@@ -9,11 +9,7 @@ class SearchPanel extends Component  {
     label: '',
   
   }
-  componentDidUpdate(prevProps){
-if (this.props.value !== prevProps.value) {
-  this.props.value =''
-}
-  }
+  
   onLabelChange = debounce((e) => {
     const searchKeyWords = e.target.value;
     this.setState({label: searchKeyWords})

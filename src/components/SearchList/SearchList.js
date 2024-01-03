@@ -65,7 +65,9 @@ export default class SearchList extends Component {
       totalPage,
       queryMovie,
       filmNotFound,
+       
     } = this.state;
+     const {pageTab} = this.props
     const hasDate = !(loading || error);
     const spinner = loading ? <Loader /> : null;
     const errorIndicator = error ? <Error errorMessage={errorMessage} /> : null;
@@ -78,6 +80,7 @@ export default class SearchList extends Component {
           page={page}
           totalPage={totalPage}
           queryMovie={queryMovie}
+          pageTab  = {pageTab}
         />
       ) : null;
 
@@ -97,11 +100,11 @@ export default class SearchList extends Component {
 }
 const MoviesItems = ({ moviesDate, onRateChange }) => {
   const moviCads = moviesDate.map((movie) => {
-    const { id, rating } = movie;
+    const { id } = movie;
     return (
       <li className="cardItem" key={id}>
         <MoviCard movie={movie} 
-        onRateChange={() => onRateChange(id, rating) }/>
+        onRateChange={(rating)=> onRateChange(id, rating)}/>
       </li>
     );
   });

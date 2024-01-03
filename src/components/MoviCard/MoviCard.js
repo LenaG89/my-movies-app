@@ -18,7 +18,7 @@ export default class MoviCard extends Component {
   }
   
   render() {
-    const {onRateChange} = this.props;
+    
     const { id, title, release_date, overview, vote_average, poster_path, rating } = this.props.movie;
 
       let classNames = 'rating ';
@@ -51,15 +51,14 @@ export default class MoviCard extends Component {
           </div>
           <div className="description">{this.kitcut(overview, 150)}</div>
           <Rate
-            style={{ fontSize: "14px", margin: "10px 0" }}
             id={id}
-            value={rating}
             className="rate"
+            
             count={10}
             allowHalf
             allowClear={false}
             defaultValue={rating}
-            onChange={()=>onRateChange(rating)}
+            onChange={this.props.onRateChange}
           />
         </div>
       </>

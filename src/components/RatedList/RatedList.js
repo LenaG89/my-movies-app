@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MoviCard from "../MoviCard/MoviCard";
 import Loader from "../Loader/Loader";
-
+import Error from "../Error/Error";
 import MyPagination from "../MyPagination/MyPagination";
 import MoviesDBService from "../../services/moviesDB-service";
 import GuestSession from "../../services/guest-session";
@@ -18,63 +18,62 @@ export default class RatedList extends Component {
     dataRated: [],
       page: 0,
       totalPage: 0,
-      totalResults: 0
+      totalResults: 0,
+      loading: false,
+    error: false,
+    errorMessage: "",
   };
 
   onError = (err) => {
     this.setState({ loading: false, error: true, errorMessage: err.message });
   };
 
-  searchMovie = (movieName, numPage) => {
+  getGuestSession = () => {
     this.setState({ loading: true });
-    if (movieName.trim() !== " ") {
-      this.moviesService
-        .getAllMovies(movieName, numPage)
-        .then((res) => {
-          if (res.results.length !== 0) {
+    this.props
+      .getGuestSession()
+      .then((res) => {
+       
             this.setState({
-              queryMovie: movieName,
-              moviesDate: res.results,
-              totalPage: res.total_pages,
-              page: res.page,
-              loading: false,
-              filmNotFound: false,
-            });
-          } else {
-            this.setState({
-              loading: false,
-              filmNotFound: true,
-            });
-          }
-        })
-        .catch(this.onError);
-    }
-  };
+                dataRated: res.results,
+                page: res.page,
+                totalPage: res.total_pages,
+                totalResults: res.total_results,
+                loading: false,
+              })
+               
+      })
+      .catch((e) => this.onError(e))
+  }
 
+  componentDidMount() {
+    this.getGuestSession()
+  }
   
   render() {
     const {
-      moviesDate,
+        dataRated,
       loading,
       error,
       errorMessage,
       page,
       totalPage,
-      queryMovie,
-      filmNotFound,
+      totalResults
+      
     } = this.state;
+    const { pageTab } = this.props;
     const hasDate = !(loading || error);
     const spinner = loading ? <Loader /> : null;
-    const errorIndicator = error ? <Error errorMessage={errorMessage} /> : null;
-    const content = hasDate ? <MoviesItems moviesDate={moviesDate} /> : null;
-    const noFilm = (moviesDate.length === 0 && filmNotFound )? <FilmNotFound /> : null;
+    const errorIndicator = error ? <Error errorMessage={errorMessage} /> : null; 
+    const content = hasDate ? <MoviesItems moviesDate={dataRated} /> : null;
+   
     const mypagination =
-      moviesDate.length > 0 ? (
+    totalResults.length > 0 ? (
         <MyPagination
-          searchMovie={this.searchMovie}
+          pageTab  = {pageTab}
+          getPageSession={this.getGuestSession}
           page={page}
           totalPage={totalPage}
-          queryMovie={queryMovie}
         />
       ) : null;
 
@@ -82,10 +81,10 @@ export default class RatedList extends Component {
       <>
        
         <ul className="moviesList">
-          {errorIndicator}
+         {errorIndicator}
           {spinner}
           {content}
-          {noFilm}
+         
         </ul>
         {mypagination}
       </>
