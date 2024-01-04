@@ -5,12 +5,14 @@ import './MyPagination.css'
 
 export default class MyPagination extends Component {
     handleChange = (page) => {
+      console.log(page, this.props.queryMovie, this.props.pageTab )
       if (this.props.pageTab === 'Search') {
+  
         this.props.searchMovie(this.props.queryMovie, page)
       }
       if (this.props.pageTab === 'Rated') {
         console.log(page)
-        this.props.getGuestSession(page)
+        this.props.getPageSession(page)
       }    
     } 
    

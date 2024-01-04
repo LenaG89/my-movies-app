@@ -1,9 +1,21 @@
 import React from "react";
-import { Spin } from "antd";
+import { Spin, ConfigProvider } from "antd";
 
 import "./Loader.css"
 
  const Loader = () => {
-   return <Spin className="spin" size="large" />
+   return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '25%' }}>
+      <ConfigProvider
+        theme={{
+          token: {
+            controlHeight: 150,
+          },
+        }}
+      >
+        <Spin />
+      </ConfigProvider>
+    </div>
+  )
  }
  export default Loader

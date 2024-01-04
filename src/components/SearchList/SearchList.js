@@ -53,8 +53,9 @@ export default class SearchList extends Component {
         .catch(this.onError);
     }
   };
-
-  
+  componentDidCatch(err) {
+    this.setState({ error: true, errorMessage: err.message });
+  }
   render() {
     const {
       moviesDate,
@@ -65,14 +66,22 @@ export default class SearchList extends Component {
       totalPage,
       queryMovie,
       filmNotFound,
-       
     } = this.state;
-     const {pageTab} = this.props
+    if (error) {
+      return <Error errorMessage={errorMessage} />;
+    }
+    const { pageTab } = this.props;
     const hasDate = !(loading || error);
     const spinner = loading ? <Loader /> : null;
     const errorIndicator = error ? <Error errorMessage={errorMessage} /> : null;
-    const content = hasDate ? <MoviesItems moviesDate={moviesDate} onRateChange={this.props.onRateChange} /> : null;
-    const noFilm = (moviesDate.length === 0 && filmNotFound )? <FilmNotFound /> : null;
+    const content = hasDate ? (
+      <MoviesItems
+        moviesDate={moviesDate}
+        onRateChange={this.props.onRateChange}
+      />
+    ) : null;
+    const noFilm =
+      moviesDate.length === 0 && filmNotFound ? <FilmNotFound /> : null;
     const mypagination =
       moviesDate.length > 0 ? (
         <MyPagination
@@ -80,19 +89,17 @@ export default class SearchList extends Component {
           page={page}
           totalPage={totalPage}
           queryMovie={queryMovie}
-          pageTab  = {pageTab}
+          pageTab={pageTab}
         />
       ) : null;
 
     return (
       <>
         <SearchPanel searchMovie={this.searchMovie} />
-        <ul className="moviesList">
-          {errorIndicator}
-          {spinner}
-          {content}
-          {noFilm}
-        </ul>
+        {errorIndicator}
+        {spinner}
+        {noFilm}
+        <ul className="moviesList">{content}</ul>
         {mypagination}
       </>
     );
@@ -103,8 +110,10 @@ const MoviesItems = ({ moviesDate, onRateChange }) => {
     const { id } = movie;
     return (
       <li className="cardItem" key={id}>
-        <MoviCard movie={movie} 
-        onRateChange={(rating)=> onRateChange(id, rating)}/>
+        <MoviCard
+          movie={movie}
+          onRateChange={(rating) => onRateChange(id, rating)}
+        />
       </li>
     );
   });

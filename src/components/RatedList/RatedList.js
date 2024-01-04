@@ -4,7 +4,6 @@ import Loader from "../Loader/Loader";
 import Error from "../Error/Error";
 import MyPagination from "../MyPagination/MyPagination";
 import MoviesDBService from "../../services/moviesDB-service";
-import GuestSession from "../../services/guest-session";
 
 
 
@@ -12,7 +11,7 @@ import "./RatedList.css";
 
 export default class RatedList extends Component {
   moviesService = new MoviesDBService();
-  guest = new GuestSession();
+  
 
   state = {
     dataRated: [],
@@ -28,10 +27,10 @@ export default class RatedList extends Component {
     this.setState({ loading: false, error: true, errorMessage: err.message });
   };
 
-  getGuestSession = () => {
+  GuestSession = (page) => {
     this.setState({ loading: true });
     this.props
-      .getGuestSession()
+      .getGuestSession(page)
       .then((res) => {
        
             this.setState({
@@ -42,14 +41,18 @@ export default class RatedList extends Component {
                 loading: false,
               })
                
-      })
+      }) 
       .catch((e) => this.onError(e))
   }
 
   componentDidMount() {
-    this.getGuestSession()
+    this.GuestSession()
+   
   }
-  
+  componentDidCatch(err){
+    
+    this.setState({error: true, errorMessage: err.message})
+  }
   render() {
     const {
         dataRated,
@@ -57,10 +60,10 @@ export default class RatedList extends Component {
       error,
       errorMessage,
       page,
-      totalPage,
-      totalResults
+      totalPage
       
     } = this.state;
+    if (error) {return <Error errorMessage={errorMessage}/>}
     const { pageTab } = this.props;
     const hasDate = !(loading || error);
     const spinner = loading ? <Loader /> : null;
@@ -68,10 +71,10 @@ export default class RatedList extends Component {
     const content = hasDate ? <MoviesItems moviesDate={dataRated} /> : null;
    
     const mypagination =
-    totalResults.length > 0 ? (
+    dataRated.length > 0 ? (
         <MyPagination
           pageTab  = {pageTab}
-          getPageSession={this.getGuestSession}
+          getPageSession={(page)=>this.GuestSession(page)}
           page={page}
           totalPage={totalPage}
         />
@@ -79,12 +82,10 @@ export default class RatedList extends Component {
 
     return (
       <>
-       
+       {spinner}
+       {errorIndicator}
         <ul className="moviesList">
-         {errorIndicator}
-          {spinner}
           {content}
-         
         </ul>
         {mypagination}
       </>

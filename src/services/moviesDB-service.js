@@ -10,34 +10,36 @@ export default class MoviesDBService {
 
     return await res.json();
   }
-  async getAllMovies(movieName, page=1) {
+  async getAllMovies(movieName, page = 1) {
     const res = await this.getResource(
       `/search/movie?query=${movieName}&api_key=${this._apiKey}&page=${page}`
     );
     return res;
   }
   async getGuestSessionId() {
-
-    const res = await this.getResource(`/authentication/guest_session/new?api_key=${this._apiKey}`)
-    console.log(res.guest_session_id)
-    
-    return  res.guest_session_id;
+    const res = await this.getResource(
+      `/authentication/guest_session/new?api_key=${this._apiKey}`
+    );
+    return res.guest_session_id;
   }
 
-  async getSession(guestSessionId, page = 1) {
-  
-    const res = await this.getResource(`/guest_session/${guestSessionId}/rated/movies?api_key=${this._apiKey}&page=${page}&sort_by=created_at.asc`);
-    
-    return await res.json();
+  async getSession(page) {
+    const res = await this.getResource(
+      `/guest_session/${localStorage.getItem("guest")}/rated/movies?api_key=${this._apiKey}&page=${page}`
+    );
+
+    return res;
   }
-  async addMovieRatingStars( id, rating) {
-    const url = `/movie/${id}/rating?api_key=${this._apiKey}&guest_session_id=${localStorage.getItem('guest')}`;
+  async addMovieRatingStars(id, rating) {
+    const url = `/movie/${id}/rating?api_key=${
+      this._apiKey
+    }&guest_session_id=${localStorage.getItem("guest")}`;
     const res = await fetch(`${this._apiBase}${url}`, {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
+        "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify({value: rating}),
+      body: JSON.stringify({ value: rating }),
     });
     if (!res.ok) {
       console.error(res);
@@ -46,5 +48,9 @@ export default class MoviesDBService {
 
     return res;
   }
- 
+  async getGenres() {
+    const res = await this.getResource(`/genre/movie/list?api_key=${this._apiKey}&language=en`)
+
+    return res.genres 
+  }
 }

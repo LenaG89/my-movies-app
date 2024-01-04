@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Rate } from "antd";
 import no_image from "./no_image.png";
 import { format, parseISO } from "date-fns";
-
+import Genres from "../Genres/Genres";
 import "./MoviCard.css";
 
 
@@ -19,7 +19,8 @@ export default class MoviCard extends Component {
   
   render() {
     
-    const { id, title, release_date, overview, vote_average, poster_path, rating } = this.props.movie;
+    const { id, title, release_date, overview, vote_average, poster_path, genre_ids,
+      rating } = this.props.movie;
 
       let classNames = 'rating ';
       if (0 <= vote_average && vote_average  <= 3){classNames =  classNames + 'default'}
@@ -46,14 +47,12 @@ export default class MoviCard extends Component {
             {release_date ? format(parseISO(release_date), "MMMM d, yyyy") : "Not found"}
           </div>
           <div className="genres">
-            <div className="genre">Action</div>
-            <div className="genre">Drame</div>
+            <Genres genreIds={genre_ids}/>
           </div>
           <div className="description">{this.kitcut(overview, 150)}</div>
           <Rate
             id={id}
             className="rate"
-            
             count={10}
             allowHalf
             allowClear={false}
