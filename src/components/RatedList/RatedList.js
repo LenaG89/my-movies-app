@@ -12,7 +12,6 @@ import "./RatedList.css";
 export default class RatedList extends Component {
   moviesService = new MoviesDBService();
   
-
   state = {
     dataRated: [],
       page: 0,
@@ -27,10 +26,10 @@ export default class RatedList extends Component {
     this.setState({ loading: false, error: true, errorMessage: err.message });
   };
 
-  GuestSession = (page) => {
+  GuestSession = (page=1) => {
     this.setState({ loading: true });
-    this.props
-      .getGuestSession(page)
+    this.moviesService
+      .getSession(page)
       .then((res) => {
        
             this.setState({

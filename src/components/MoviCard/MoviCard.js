@@ -3,10 +3,20 @@ import { Rate } from "antd";
 import no_image from "./no_image.png";
 import { format, parseISO } from "date-fns";
 import Genres from "../Genres/Genres";
+import PropTypes from "prop-types";
 import "./MoviCard.css";
 
-
 export default class MoviCard extends Component {
+  static propTypes = {
+    id: PropTypes.string,
+    title: PropTypes.string,
+    release_date: PropTypes.string,
+    overview: PropTypes.string,
+    vote_average: PropTypes.number,
+    poster_path: PropTypes.string,
+    genre_ids: PropTypes.arrayOf(PropTypes.object)
+  };
+
   kitcut(text, limit = 150) {
     var description = text.trim();
     if (description.length <= limit) return description;
@@ -16,26 +26,38 @@ export default class MoviCard extends Component {
     str = a.join(" ");
     return str + "...";
   }
-  
-  render() {
-    
-    const { id, title, release_date, overview, vote_average, poster_path, genre_ids,
-      rating } = this.props.movie;
 
-      let classNames = 'rating ';
-      if (0 <= vote_average && vote_average  <= 3){classNames =  classNames + 'default'}
-      else if  (3 < vote_average && vote_average  < 5){ classNames = classNames + 'low'}
-      else if  (5 <= vote_average && vote_average  <= 7){ classNames = classNames +  'medium'}
-      else if (7 < vote_average && vote_average <= 10) { classNames = classNames + 'high'}
-      
-   
+  render() {
+    const {
+      id,
+      title,
+      release_date,
+      overview,
+      vote_average,
+      poster_path,
+      genre_ids,
+      rating,
+    } = this.props.movie;
+
+    let classNames = "rating ";
+    if (0 <= vote_average && vote_average <= 3) {
+      classNames = classNames + "default";
+    } else if (3 < vote_average && vote_average < 5) {
+      classNames = classNames + "low";
+    } else if (5 <= vote_average && vote_average <= 7) {
+      classNames = classNames + "medium";
+    } else if (7 < vote_average && vote_average <= 10) {
+      classNames = classNames + "high";
+    }
+
     return (
-      
       <>
         <div className="img">
           <img
             src={
-              poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : no_image
+              poster_path
+                ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+                : no_image
             }
             alt="poster"
           />
@@ -44,10 +66,12 @@ export default class MoviCard extends Component {
           <h3 className="cardTitle">{title}</h3>
           <div className={classNames}>{Math.round(vote_average * 10) / 10}</div>
           <div className="date">
-            {release_date ? format(parseISO(release_date), "MMMM d, yyyy") : "Not found"}
+            {release_date
+              ? format(parseISO(release_date), "MMMM d, yyyy")
+              : "Not found"}
           </div>
           <div className="genres">
-            <Genres genreIds={genre_ids}/>
+            <Genres genreIds={genre_ids} />
           </div>
           <div className="description">{this.kitcut(overview, 150)}</div>
           <Rate

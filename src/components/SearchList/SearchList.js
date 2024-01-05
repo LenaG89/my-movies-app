@@ -53,6 +53,10 @@ export default class SearchList extends Component {
         .catch(this.onError);
     }
   };
+  onRateChange = (id, rating) => {
+    localStorage.setItem(`${id}`, `${rating}`);
+    this.moviesService.addMovieRatingStars(id, rating).catch(this.onError);
+  };
   componentDidCatch(err) {
     this.setState({ error: true, errorMessage: err.message });
   }
@@ -77,7 +81,7 @@ export default class SearchList extends Component {
     const content = hasDate ? (
       <MoviesItems
         moviesDate={moviesDate}
-        onRateChange={this.props.onRateChange}
+        onRateChange={this.onRateChange}
       />
     ) : null;
     const noFilm =

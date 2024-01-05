@@ -1,17 +1,21 @@
 import React, { Component } from "react";
 import { ConfigProvider, Pagination } from "antd";
-
+import PropTypes from "prop-types";
 import './MyPagination.css'
 
 export default class MyPagination extends Component {
-    handleChange = (page) => {
-      console.log(page, this.props.queryMovie, this.props.pageTab )
+  static propTypes = {
+    searchMovie: PropTypes.func,
+    getPageSession: PropTypes.func,
+    page: PropTypes.number,
+    totalPage: PropTypes.number,
+  };
+
+    handleChange = (page) => { 
       if (this.props.pageTab === 'Search') {
-  
         this.props.searchMovie(this.props.queryMovie, page)
       }
-      if (this.props.pageTab === 'Rated') {
-        console.log(page)
+      if (this.props.pageTab === 'Rated') { 
         this.props.getPageSession(page)
       }    
     } 
